@@ -2,6 +2,9 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { HemisLightComponent } from './lights/hemis-light/hemis-light.component';
+import { DirLightComponent } from './lights/dir-light/dir-light.component';
+import { SkyBoxComponent } from './environment/skybox/skybox.component';
 
 @Component({
   selector: 'app-root',
@@ -24,25 +27,24 @@ export class AppComponent {
   hemiLightHelper;
   planet;
 
-  constructor() {
+  constructor(
+    private hemisLight: HemisLightComponent,
+    private dirLight: DirLightComponent,
+    private skyBox: SkyBoxComponent,
+  ) {
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-    this.dirLightPosition = new THREE.Vector3(0, 1, 0);
-    this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    this.directionalLight.position.set(10, 25, 10);
-    this.lightHelper = new THREE.DirectionalLightHelper(this.directionalLight, 5);
-    this.scene.add(this.directionalLight, this.lightHelper);
+    
 
-    this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
-    this.hemiLight.color.setHSL(0.6, 1, 0.6);
-    this.hemiLight.groundColor.setHSL(0.035, 1, 0.75);
-    this.hemiLight.position.set(0, 25, 0);
-    this.scene.add(this.hemiLight);
-
-    this.hemiLightHelper = new THREE.HemisphereLightHelper(this.hemiLight, 10);
-    this.scene.add(this.hemiLightHelper);
+    this.scene.add(
+      hemisLight.getLight(),
+      //hemisLight.getHelper(),
+      dirLight.getLight(),
+      //dirLight.getHelper(),
+      skyBox.getSkyBox(),
+      );
 
     this.camera.position.z = 50;
 
