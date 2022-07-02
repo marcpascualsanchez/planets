@@ -5,6 +5,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { HemisLightComponent } from './lights/hemis-light/hemis-light.component';
 import { DirLightComponent } from './lights/dir-light/dir-light.component';
 import { SkyBoxComponent } from './environment/skybox/skybox.component';
+import { Hexasphere } from './planet/hexasphere';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +37,7 @@ export class AppComponent {
 
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-    
+
 
     this.scene.add(
       hemisLight.getLight(),
@@ -44,7 +45,7 @@ export class AppComponent {
       dirLight.getLight(),
       //dirLight.getHelper(),
       skyBox.getSkyBox(),
-      );
+    );
 
     this.camera.position.z = 50;
 
@@ -58,18 +59,56 @@ export class AppComponent {
     let self = this;
     // load a resource
     this.loader.load('../assets/models/hexasphere-20-3.obj',
-      ( object )  => {
+      (object) => {
+        const origin = new THREE.Vector3(0, 0, 0);
+
         self.planet = object;
         console.log(object);
-        self.planet.rotation.x -= 0.5
+        // self.planet.rotation.x -= 0.5
+        let cont = 0;
+        
         for (let j = 0; j < object.children.length; j++) {
-            object.children[j].material.color.setHex(0x8A2BE2);
+          object.children[j].material.color.setHex(0x8A2BE2);
+          let currentFace = [];
+          object.children[j].geometry.attributes.position.array.forEach((n, i) => {
+            if (cont === 120) {
+              return;
+            }
+            if (currentFace.length >= 3) {
+              const geometry = new THREE.BoxGeometry(1, 1, 1);
+              const material = new THREE.MeshBasicMaterial({ color: 0x00000 + cont * 100 });
+              const c = new THREE.Mesh(geometry, material);
+              c.position.x = currentFace[0];
+              c.position.y = currentFace[1];
+              c.position.z = currentFace[2];
+              self.scene.add(c);
+              cont++;
+
+              // const v = new THREE.Vector3(
+              //   currentFace[0],
+              //   currentFace[1],
+              //   currentFace[2],
+              // );
+              // // console.log(v);
+              // self.scene.add(new THREE.ArrowHelper(v, origin, 30, 0xffff00));
+
+
+              currentFace = [n];
+            } else {
+              currentFace.push(n);
+            }
+          })
         }
-        self.scene.add( object );
+        console.log('************  cont', cont);
+        self.scene.add(object);
         self.animate();
       },
-      ( error ) => { console.log( 'An error happened' );
-    });
+      () => {
+        console.log('in progress');
+      },
+      (error) => {
+        console.log('An error happened');
+      });
   }
 
   ngAfterViewInit() {
@@ -80,7 +119,7 @@ export class AppComponent {
   animate() {
     window.requestAnimationFrame(() => this.animate());
     this.controls.update();
-    this.planet.rotation.y += 0.003;
+    // this.planet.rotation.y += 0.003;
     this.renderer.render(this.scene, this.camera);
   }
 }
