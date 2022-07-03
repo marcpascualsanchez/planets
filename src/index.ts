@@ -1,8 +1,8 @@
-import { ArcRotateCamera, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from "babylonjs";
+import { ArcRotateCamera, Color4, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from "babylonjs";
+import { Game } from './game/Game';
 
 var canvas: any = document.getElementById("renderCanvas");
 var engine: Engine = new Engine(canvas, true);
-const planetName = 'planet';
 
 function createScene(): Scene {
     var scene: Scene = new Scene(engine);
@@ -12,7 +12,7 @@ function createScene(): Scene {
 
     new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
-    const g = BABYLON.MeshBuilder.CreateGoldberg(planetName, { m: 3, n: 2 });
+    new Game();
 
     return scene;
 }
@@ -21,6 +21,4 @@ var scene: Scene = createScene();
 
 engine.runRenderLoop(() => {
     scene.render();
-    const planet = scene.getMeshByName(planetName);
-    planet?.rotate(new Vector3(0, 1, 0), 0.005);
 });
