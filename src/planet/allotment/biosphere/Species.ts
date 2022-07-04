@@ -1,18 +1,27 @@
 import { Color4, Mesh, MeshBuilder } from "babylonjs";
-import { Allotment } from "../Allotment";
+import { Parcel as Parcel } from "../Parcel";
 
 const species = ['plant', 'rabbit', 'wolf'];
-const spawnProbability = 0.33;
+const spawnProbability = 1 //0.33;
+const maxSpawn = 1;
+let totalSpawn = 0;
 
-export class Biosphere {
+export const allSpecies: Species[] = [];
+
+export class Species {
     species: string | null = null;
-    position;
+    parcel: Parcel;
     mesh: Mesh;
 
-    constructor(position) {
+    constructor(parcel: Parcel) {
+        if (totalSpawn >= maxSpawn) {
+            return;
+        }
         this.setSpecies();
-        this.position = position;
+        this.parcel = parcel;
         this.createMesh();
+        totalSpawn++;
+        allSpecies.push(this);
     }
 
     setSpecies() {
@@ -40,21 +49,19 @@ export class Biosphere {
                 break;
         }
         this.mesh = MeshBuilder.CreateBox("box", { size: 0.1, faceColors: [color, color, color, color, color, color] });
-        this.mesh.position = this.position;
+        this.mesh.position = this.parcel.position;
     }
 
-    move(allotments: Allotment[], adjacentAllotmentIds: number[]) {
+    move(allotments: Parcel[]) {
         switch (this.species) {
             case null:
             case 'plant':
                 break;
             case 'rabbit':
             case 'wolf':
-                const randomId = adjacentAllotmentIds[Math.floor(Math.random() * species.length)];
-                const targetAllotment = allotments[randomId];
-                targetAllotment.biosphere = this;
+                const randomId = this.parcel.adjacentAllotmentIds[Math.floor(Math.random() * this.parcel.adjacentAllotmentIds.length)];
+                this.parcel = allotments[randomId];
                 this.mesh.dispose();
-                this.position = targetAllotment.position;
                 this.createMesh();
                 break;
         }
