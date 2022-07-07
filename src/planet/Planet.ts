@@ -29,4 +29,8 @@ export class Planet {
     startTurn() {
         Planet.mobileTokens.forEach(a => a.move(this.allParcels));
     }
+
+    static removeMobileToken(id: number) {
+        Planet.mobileTokens = Planet.mobileTokens.filter(t => t.id != id);
+    }
 }

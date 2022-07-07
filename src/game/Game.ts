@@ -1,6 +1,7 @@
 import { Planet } from '../planet/Planet';
 
 export class Game {
+    static autoIncrementalId = 0;
     turnTime = 1000;
     planet: Planet;
 
@@ -14,5 +15,10 @@ export class Game {
             () => this.planet.startTurn(),
             this.turnTime,
         )
+    }
+
+    static getId() {
+        this.autoIncrementalId++;
+        return this.autoIncrementalId;
     }
 }
