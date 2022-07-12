@@ -1,11 +1,13 @@
 import { GoldbergCreationOption, GoldbergMesh, MeshBuilder } from "babylonjs";
-import { Mobile } from "./parcel/common/Mobile";
+import { MobileToken } from "./parcel/common/MobileToken";
+import { Species } from "./parcel/common/Species";
 import { Parcel } from './parcel/Parcel';
 
 const PLANET_NAME = 'planet';
 
 export class Planet {
-    static mobileTokens: Mobile[] = [];
+    static mobileTokens: MobileToken[] = [];
+    static speciesTokens: Species[] = [];
 
     mesh: GoldbergMesh;
     allParcels: Parcel[] = [];
@@ -28,9 +30,14 @@ export class Planet {
 
     startTurn() {
         Planet.mobileTokens.forEach(a => a.move(this.allParcels));
+        Planet.speciesTokens.forEach(t => t.nourish());
     }
 
     static removeMobileToken(id: number) {
         Planet.mobileTokens = Planet.mobileTokens.filter(t => t.id != id);
+    }
+
+    static removeSpeciesToken(id: number) {
+        Planet.speciesTokens = Planet.speciesTokens.filter(t => t.id != id);
     }
 }

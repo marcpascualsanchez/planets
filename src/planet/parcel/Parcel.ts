@@ -5,8 +5,8 @@ import { Plant } from "./species/Plant";
 import { Rabbit } from "./species/Rabbit";
 import { Wolf } from "./species/Wolf";
 
-const spawnProbability = 0.33;
-const maxSpawn = 1;
+const spawnProbability = 1;//0.33;
+const maxSpawn = 50;
 let totalSpawn = 0;
 
 export class Parcel {
@@ -20,6 +20,7 @@ export class Parcel {
         if (totalSpawn >= maxSpawn || Math.random() > spawnProbability) {
             return;
         }
+        totalSpawn++;
 
         const specieClass = getRandom(['Wolf', 'Rabbit', 'Plant']);
         switch (specieClass) {
@@ -37,7 +38,6 @@ export class Parcel {
 
     addToken(token: Token) {
         this.tokens.push(token);
-        token.spawn();
     }
 
     removeToken(id: number) {

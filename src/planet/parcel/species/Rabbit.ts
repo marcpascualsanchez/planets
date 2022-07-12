@@ -1,25 +1,16 @@
-import { Color4 } from "babylonjs";
-import { getRandom } from "../../../utils";
+import { Color4, Vector3 } from "babylonjs";
 import { Planet } from "../../Planet";
-import { Mobile } from "../common/Mobile";
-import { Token } from "../common/Token";
+import { MobileToken } from "../common/MobileToken";
+import { Species } from "../common/Species";
 import { Parcel } from "../Parcel";
 import { Plant } from "./Plant";
 
-export class Rabbit extends Token implements Mobile {
+export class Rabbit extends MobileToken implements Species {
     step: number;
 
     constructor(parcel: Parcel) {
         super(parcel, new Color4(204, 204, 0, 1));
-        Planet.mobileTokens.push(this);
-    }
-
-    move(allParcels: Parcel[]): void {
-        this.parcel.removeToken(this.id);
-        const randomId = getRandom(this.parcel.adjacentParcelIds);
-        this.parcel = allParcels[randomId];
-        this.parcel.addToken(this);
-        this.eat();
+        Planet.speciesTokens.push(this);
     }
 
     public despawn(): void {
@@ -27,9 +18,7 @@ export class Rabbit extends Token implements Mobile {
         Planet.removeMobileToken(this.id);
     }
 
-    // TODO: create common parent class Animal + Token that eats other tokens
-    // add a new turn after move to resolve all eatings
-    eat() {
+    nourish(): void {
         const prey = this.parcel.tokens.find(t => t instanceof Plant);
         if (!prey) {
             return;

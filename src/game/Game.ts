@@ -2,7 +2,7 @@ import { Planet } from '../planet/Planet';
 
 export class Game {
     static autoIncrementalId = 0;
-    turnTime = 1000;
+    static turnTime = 1500;
     planet: Planet;
 
     constructor() {
@@ -13,7 +13,7 @@ export class Game {
     start() {
         setInterval(
             () => this.planet.startTurn(),
-            this.turnTime,
+            Game.turnTime,
         )
     }
 

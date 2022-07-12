@@ -1,5 +1,5 @@
-import { Plant } from "../species/Plant";
-import { Rabbit } from "../species/Rabbit";
-import { Wolf } from "../species/Wolf";
+import { Token } from "./Token";
 
-export type Species = Wolf | Rabbit | Plant;
+export interface Species extends Token {
+    nourish(): void;
+}

@@ -1,4 +1,5 @@
-import { ArcRotateCamera, Color4, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from "babylonjs";
+import { update } from "@tweenjs/tween.js";
+import { ArcRotateCamera, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
 import { Game } from './game/Game';
 
 var canvas: any = document.getElementById("renderCanvas");
@@ -21,4 +22,5 @@ var scene: Scene = createScene();
 
 engine.runRenderLoop(() => {
     scene.render();
+    update(performance.now());
 });
