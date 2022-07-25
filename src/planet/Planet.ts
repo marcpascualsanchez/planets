@@ -28,8 +28,8 @@ export class Planet {
         }
     }
 
-    startTurn() {
-        Planet.mobileTokens.forEach(a => a.move(this.allParcels));
+    async startTurn() {
+        await Promise.all(Planet.mobileTokens.map(a => a.move(this.allParcels)));
         Planet.speciesTokens.forEach(t => t.nourish());
     }
 

@@ -41,6 +41,6 @@ export class Parcel {
     }
 
     removeToken(id: number) {
-        this.tokens.filter(p => p.id != id);
+        this.tokens = this.tokens.filter(p => p.id != id);
     }
 }

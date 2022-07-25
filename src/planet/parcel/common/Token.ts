@@ -24,7 +24,13 @@ export class Token {
             this.mesh.dispose();
         }
         this.mesh = createCube(this.color);
-        this.mesh.position = this.parcel.position;
+        this.setPosition(this.parcel.position);
+    }
+
+    public setPosition(position: { x: number, y: number, z: number }): void {
+        this.mesh.position.x = position.x;
+        this.mesh.position.y = position.y;
+        this.mesh.position.z = position.z;
     }
 
     public despawn(): void {
