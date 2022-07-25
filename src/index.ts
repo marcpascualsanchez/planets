@@ -13,7 +13,7 @@ function createScene(): Scene {
 
     new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
-    new Game();
+    new Game(scene);
 
     return scene;
 }

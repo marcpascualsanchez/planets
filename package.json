@@ -10,6 +10,7 @@
     "babylonjs-loaders": "^5.0.0-rc.13"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "^5.5.0",
     "nodemon-webpack-plugin": "^4.8.0",
     "ts-loader": "^9.3.1",
