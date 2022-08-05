@@ -1,6 +1,7 @@
 import { GoldbergCreationOption, GoldbergMesh, MeshBuilder } from "babylonjs";
 import { MobileToken } from "./parcel/common/MobileToken";
 import { Species } from "./parcel/common/Species";
+import { Cloud } from "./parcel/cloud/Cloud";
 import { Parcel } from './parcel/Parcel';
 
 const PLANET_NAME = 'planet';
@@ -8,6 +9,7 @@ const PLANET_NAME = 'planet';
 export class Planet {
     static mobileTokens: MobileToken[] = [];
     static speciesTokens: Species[] = [];
+    static cloudTokens: Cloud[] = [];
 
     mesh: GoldbergMesh;
     allParcels: Parcel[] = [];

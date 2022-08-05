@@ -4,10 +4,8 @@ import { Token } from "./common/Token";
 import { Plant } from "./species/Plant";
 import { Rabbit } from "./species/Rabbit";
 import { Wolf } from "./species/Wolf";
-
-const spawnProbability = 1;//0.33;
-const maxSpawn = 50;
-let totalSpawn = 0;
+import { config } from '../../game/config';
+import { Cloud } from "./cloud/Cloud";
 
 export class Parcel {
     position: Vector3;
@@ -17,10 +15,16 @@ export class Parcel {
     constructor(position: Vector3, adjacentFaceIds: number[]) {
         this.position = position;
         this.adjacentParcelIds = adjacentFaceIds;
+        this.addSpecies();
+        this.addClouds();
+    }
+
+    private addSpecies() {
+        const { totalSpawn, maxSpawn, spawnProbability } = config.species;
         if (totalSpawn >= maxSpawn || Math.random() > spawnProbability) {
             return;
         }
-        totalSpawn++;
+        config.species.totalSpawn++;
 
         const specieClass = getRandom(['Wolf', 'Rabbit', 'Plant']);
         switch (specieClass) {
@@ -36,11 +40,21 @@ export class Parcel {
         }
     }
 
-    addToken(token: Token) {
+    private addClouds() {
+        const { totalSpawn, maxSpawn, spawnProbability } = config.clouds;
+        if (totalSpawn >= maxSpawn || Math.random() > spawnProbability) {
+            return;
+        }
+        config.clouds.totalSpawn++;
+
+        this.tokens.push(new Cloud(this));
+    }
+
+    public addToken(token: Token) {
         this.tokens.push(token);
     }
 
-    removeToken(id: number) {
+    public removeToken(id: number) {
         this.tokens = this.tokens.filter(p => p.id != id);
     }
 }
